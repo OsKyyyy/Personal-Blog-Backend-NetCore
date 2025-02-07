@@ -24,6 +24,12 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 
+            builder.RegisterType<BlogManager>().As<IBlogService>();
+            builder.RegisterType<EfBlogDal>().As<IBlogDal>();
+
+            builder.RegisterType<TagManager>().As<ITagService>();
+            builder.RegisterType<EfTagDal>().As<ITagDal>();
+
             builder.RegisterType<AboutManager>().As<IAboutService>();
             builder.RegisterType<EfAboutDal>().As<IAboutDal>();
 
