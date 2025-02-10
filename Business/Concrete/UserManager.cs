@@ -71,7 +71,7 @@ namespace Business.Concrete
         {
             var result = _userDal.CheckExistForUpdate(email, Id);
 
-            if (result)
+            if (!result)
             {
                 return new ErrorResult(Messages.UserNotFound);
 
@@ -80,15 +80,15 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UserInfoListed);
         }
 
-        public IDataResult<UserViewDto> ListById(int id)
+        public IResult CheckExistById(int id)
         {
-            var result = _userDal.ListById(id);
-            if (result == null)
+            var result = _userDal.CheckExistById(id);
+            if (!result)
             {
-                return new ErrorDataResult<UserViewDto>(Messages.UserNotFound);
+                return new ErrorResult(Messages.UserNotFound);
             }
 
-            return new SuccessDataResult<UserViewDto>(result, Messages.UserInfoListed);
+            return new SuccessResult(Messages.UserInfoListed);
         }
 
         public IResult AddUserOperationClaim(UserRoleAddDto userRoleAddDto)

@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            var listById = _userService.ListById(id);
+            var listById = _userService.CheckExistById(id);
             if (!listById.Status)
             {
                 return BadRequest(listById);

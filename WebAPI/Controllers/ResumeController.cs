@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
         [HttpPut]
         public ActionResult Update(ResumeUpdateDto resumeUpdateDto)
         {
-            var listById = _resumeService.ListById(resumeUpdateDto.Id);
+            var listById = _resumeService.CheckExistById(resumeUpdateDto.Id);
             if (!listById.Status)
             {
                 return BadRequest(listById);
@@ -53,7 +53,7 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            var listById = _resumeService.ListById(id);
+            var listById = _resumeService.CheckExistById(id);
             if (!listById.Status)
             {
                 return BadRequest(listById);
@@ -61,6 +61,19 @@ namespace WebAPI.Controllers
 
             var result = _resumeService.Delete(id);
 
+            if (!result.Status)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [Route("List")]
+        [HttpGet]
+        public ActionResult List()
+        {
+            var result = _resumeService.List();
             if (!result.Status)
             {
                 return BadRequest(result);

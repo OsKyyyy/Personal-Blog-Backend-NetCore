@@ -72,16 +72,22 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ResumeDeleted);
         }
 
-        [SecuredOperation("Admin")]
-        public IDataResult<ResumeViewDto> ListById(int id)
+        public IDataResult<List<ResumeViewDto>> List()
         {
-            var result = _resumeDal.ListById(id);
-            if (result == null)
+            var result = _resumeDal.List();
+            return new SuccessDataResult<List<ResumeViewDto>>(result, Messages.ResumeInfoListed);
+        }
+
+        [SecuredOperation("Admin")]
+        public IResult CheckExistById(int id)
+        {
+            var result = _resumeDal.CheckExistById(id);
+            if (!result)
             {
-                return new ErrorDataResult<ResumeViewDto>(Messages.ResumeNotFound);
+                return new ErrorResult(Messages.ResumeNotFound);
             }
 
-            return new SuccessDataResult<ResumeViewDto>(result, Messages.ResumeInfoListed);
+            return new SuccessResult(Messages.ResumeInfoListed);
         }
     }
 }

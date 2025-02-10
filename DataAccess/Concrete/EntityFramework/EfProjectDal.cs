@@ -2,22 +2,22 @@
 using Core.Entities.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework.Contexts;
-using Entities.Dtos.Blog;
+using Entities.Dtos.Project;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfBlogDal : EfEntityRepositoryBase<Blog, DataBaseContext>, IBlogDal
+    public class EfProjectDal : EfEntityRepositoryBase<Project, DataBaseContext>, IProjectDal
     {       
-        public int Add(Blog blog)
+        public int Add(Project project)
         {
             using (var context = new DataBaseContext())
             {
-                context.Blogs.Add(blog);
+                context.Projects.Add(project);
                 int rowsAffected = context.SaveChanges(); 
 
                 if (rowsAffected > 0)
                 {
-                    return blog.Id;
+                    return project.Id;
                 }
                 else
                 {
@@ -26,21 +26,21 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public void Update(Blog blog)
+        public void Update(Project project)
         {
             using (var context = new DataBaseContext())
             {
-                var result = (from b in context.Blogs
-                              where b.Id == blog.Id
-                              select b).FirstOrDefault();
+                var result = (from p in context.Projects
+                              where p.Id == project.Id
+                              select p).FirstOrDefault();
 
                 if (result != null)
                 {
-                    result.Title = blog.Title;
-                    result.Content = blog.Content;
-                    result.Slug = blog.Slug;
-                    result.UpdateDate = blog.UpdateDate;
-                    result.UpdateUserId = blog.UpdateUserId;
+                    result.Title = project.Title;
+                    result.Content = project.Content;
+                    result.Slug = project.Slug;
+                    result.UpdateDate = project.UpdateDate;
+                    result.UpdateUserId = project.UpdateUserId;
 
                     context.SaveChanges();
                 }
@@ -51,8 +51,8 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (var context = new DataBaseContext())
             {
-                var exists = context.Blogs.Any(b => b.Id == id);
-                return exists;
+                var exist = context.Projects.Any(p => p.Id == id);
+                return exist;
             }
         }
 
@@ -60,9 +60,10 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (var context = new DataBaseContext())
             {
-                var result = (from b in context.Blogs
-                              where b.Id == id
-                              select b).FirstOrDefault();
+
+                var result = (from p in context.Projects
+                              where p.Id == id
+                              select p).FirstOrDefault();
 
                 result.Deleted = true;
 

@@ -24,8 +24,14 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 
+            builder.RegisterType<ProjectManager>().As<IProjectService>();
+            builder.RegisterType<EfProjectDal>().As<IProjectDal>();
+
             builder.RegisterType<BlogManager>().As<IBlogService>();
             builder.RegisterType<EfBlogDal>().As<IBlogDal>();
+
+            builder.RegisterType<CommentManager>().As<ICommentService>();
+            builder.RegisterType<EfCommentDal>().As<ICommentDal>();
 
             builder.RegisterType<TagManager>().As<ITagService>();
             builder.RegisterType<EfTagDal>().As<ITagDal>();
@@ -35,7 +41,7 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<ResumeManager>().As<IResumeService>();
             builder.RegisterType<EfResumeDal>().As<IResumeDal>();
-
+            
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

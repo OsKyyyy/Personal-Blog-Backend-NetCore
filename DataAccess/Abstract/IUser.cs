@@ -10,8 +10,8 @@ namespace DataAccess.Abstract
         int Add(User user);
         User Delete(int id);
         User Update(User user);
-        UserViewDto ListById(int id);
         bool CheckExistForUpdate(string email, int Id);
+        bool CheckExistById(int id);
         void AddUserOperationClaim(UserOperationClaim userOperationClaim);
     }
 }

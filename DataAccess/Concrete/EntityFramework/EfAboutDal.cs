@@ -43,28 +43,6 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public AboutViewDto ListById(int id)
-        {
-            using (var context = new DataBaseContext())
-            {
-                var result = (from a in context.About
-                              where a.Id == id
-                              select new AboutViewDto
-                              {
-                                  Id = a.Id,
-                                  Title = a.Title,
-                                  Content = a.Content,
-                                  Name = a.Name,
-                                  DateOfBirth = a.DateOfBirth,
-                                  Address = a.Address,
-                                  Email = a.Email,
-                                  Phone = a.Phone,
-                              }).FirstOrDefault();                             
-
-                return result;
-            }
-        }
-
         public void Delete(int id)
         {
             using (var context = new DataBaseContext())
@@ -77,6 +55,46 @@ namespace DataAccess.Concrete.EntityFramework
                 result.Deleted = true;
 
                 context.SaveChanges();
+            }
+        }
+
+        public AboutViewDto List()
+        {
+            using (var context = new DataBaseContext())
+            {
+                var result = (from a in context.About
+                              where a.Deleted == false
+                              select new
+                              {
+                                  a.Id,
+                                  a.Title,
+                                  a.Content,
+                                  a.Name,
+                                  a.DateOfBirth,
+                                  a.Address,
+                                  a.Email,
+                                  a.Phone,
+                              }).FirstOrDefault();
+                return new AboutViewDto
+                {
+                    Id = result.Id,
+                    Title = result.Title,
+                    Content = result.Content,
+                    Name = result.Name,
+                    DateOfBirth = result.DateOfBirth.ToString("dd/MM/yyyy"),
+                    Address = result.Address,
+                    Email = result.Email,
+                    Phone = result.Phone,
+                };
+            }
+        }
+
+        public bool CheckExistById(int id)
+        {
+            using (var context = new DataBaseContext())
+            {
+                var exists = context.About.Any(a => a.Id == id);
+                return exists;
             }
         }
     }

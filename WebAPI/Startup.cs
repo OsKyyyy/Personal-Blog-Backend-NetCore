@@ -67,11 +67,19 @@ namespace WebAPI
                 });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:3000") // React uygulamanın adresi
+                          .AllowAnyMethod()  // GET, POST, PUT, DELETE vb. her HTTP metoduna izin ver
+                          .AllowAnyHeader(); // Tüm başlıklara izin ver
+                });
+            });
+
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = null; });
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            //services.AddCors();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -113,7 +121,7 @@ namespace WebAPI
 
             app.ConfigureCustomExceptionMiddleware();
 
-            //app.UseCors(builder => builder.WithOrigins("http://localhost:4200", "https://localhost:44334").AllowAnyHeader());
+            app.UseCors(builder => builder.WithOrigins("http://localhost:3000", "http://localhost:3001").AllowAnyHeader().AllowAnyMethod());
 
             app.UseHttpsRedirection();
 

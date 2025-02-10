@@ -7,7 +7,8 @@ namespace Business.Abstract
     {
         IResult Add(ResumeAddDto resumeAddDto);
         IResult Update(ResumeUpdateDto resumeUpdateDto);
-        IDataResult<ResumeViewDto> ListById(int id);
+        IResult CheckExistById(int id);
         IResult Delete(int id);
+        IDataResult<List<ResumeViewDto>> List();
     }
 }

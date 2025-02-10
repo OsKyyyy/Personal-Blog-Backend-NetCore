@@ -8,7 +8,6 @@ using Core.Utilities.Results.Concrete;
 using Core.Aspects.Autofac.Validation;
 using Entities.Dtos.Blog;
 using Business.ValidationRules.FluentValidation.Blog;
-using Business.Constant;
 
 namespace Business.Concrete
 {
@@ -78,15 +77,15 @@ namespace Business.Concrete
         }
 
         [SecuredOperation("Admin")]
-        public IDataResult<BlogViewDto> ListById(int id)
+        public IResult CheckExistById(int id)
         {
-            var result = _blogDal.ListById(id);
-            if (result == null)
+            var result = _blogDal.CheckExistById(id);
+            if (!result)
             {
-                return new ErrorDataResult<BlogViewDto>(Messages.BlogNotFound);
+                return new ErrorResult(Messages.BlogNotFound);
             }
 
-            return new SuccessDataResult<BlogViewDto>(result, Messages.BlogInfoListed);
+            return new SuccessResult(Messages.BlogInfoListed);
         }
     }
 }

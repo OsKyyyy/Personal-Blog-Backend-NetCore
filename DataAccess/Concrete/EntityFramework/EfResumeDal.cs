@@ -21,9 +21,9 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (var context = new DataBaseContext())
             {
-                var result = (from u in context.Resume
-                              where u.Id == resume.Id
-                              select u).FirstOrDefault();
+                var result = (from r in context.Resume
+                              where r.Id == resume.Id
+                              select r).FirstOrDefault();
 
                 if (result != null)
                 {
@@ -39,41 +39,66 @@ namespace DataAccess.Concrete.EntityFramework
                     context.SaveChanges();
                 }
             }
-        }
-
-        public ResumeViewDto ListById(int id)
-        {
-            using (var context = new DataBaseContext())
-            {
-                var result = (from a in context.Resume
-                              where a.Id == id
-                              select new ResumeViewDto
-                              {
-                                  Id = a.Id,
-                                  Description = a.Description,
-                                  Title = a.Title,
-                                  Organization = a.Organization,
-                                  StartDate = a.StartDate,
-                                  EndDate = a.EndDate,
-                                  CurrentPosition = a.CurrentPosition,
-                              }).FirstOrDefault();                             
-
-                return result;
-            }
-        }
+        }        
 
         public void Delete(int id)
         {
             using (var context = new DataBaseContext())
             {
-
-                var result = (from a in context.Resume
-                              where a.Id == id
-                              select a).FirstOrDefault();
+                var result = (from r in context.Resume
+                              where r.Id == id
+                              select r).FirstOrDefault();
 
                 result.Deleted = true;
 
                 context.SaveChanges();
+            }
+        }
+
+        public List<ResumeViewDto> List()
+        {
+            using (var context = new DataBaseContext())
+            {
+                var result = (from r in context.Resume
+                              where r.Deleted == false
+                              orderby r.StartDate descending
+                              select new
+                              {
+                                  r.Id,
+                                  r.Description,
+                                  r.Title,
+                                  r.Organization,
+                                  r.StartDate,
+                                  r.EndDate,
+                                  r.CurrentPosition                                  
+                              }).ToList();
+
+                List<ResumeViewDto> resumeList = new List<ResumeViewDto>();
+
+                foreach (var r in result)
+                {
+                    resumeList.Add(new ResumeViewDto
+                    {
+                        Id = r.Id,
+                        Description = r.Description,
+                        Title = r.Title,
+                        Organization = r.Organization,
+                        StartDate = r.StartDate.ToString("MMMM yyyy"),
+                        EndDate = r.EndDate.HasValue ? r.EndDate.Value.ToString("MMMM yyyy") : null,
+                        CurrentPosition = r.CurrentPosition
+                    });
+                }
+
+                return resumeList;
+            }
+        }
+
+        public bool CheckExistById(int id)
+        {
+            using (var context = new DataBaseContext())
+            {
+                var exist = context.Resume.Any(r => r.Id == id);
+                return exist;
             }
         }
     }

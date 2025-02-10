@@ -13,7 +13,7 @@ namespace Business.Abstract
         IResult Delete(int id);
         IDataResult<User> Update(UserUpdateDto user);
         IResult CheckExistsForUpdate(string email, int Id);
-        IDataResult<UserViewDto> ListById(int id);
+        IResult CheckExistById(int id);
         IResult AddUserOperationClaim(UserRoleAddDto userRoleAddDto);
     }
 }

@@ -9,6 +9,7 @@ namespace DataAccess.Abstract
         void Add(About about);
         void Update(About about);
         void Delete(int id);
-        AboutViewDto ListById(int id);
+        AboutViewDto List();
+        bool CheckExistById(int id);
     }
 }

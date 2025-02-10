@@ -70,32 +70,7 @@ namespace DataAccess.Concrete.EntityFramework
 
                 return user;
             }
-        }
-
-        public UserViewDto ListById(int id)
-        {
-            using (var context = new DataBaseContext())
-            {
-                var userDetailsWithRoles = (from uoc in context.UserOperationClaims
-                                            join oc in context.OperationClaims
-                                            on uoc.OperationClaimId equals oc.Id
-                                            join user in context.Users
-                                            on uoc.UserId equals user.Id
-                                            where uoc.UserId == id
-                                            select new UserViewDto
-                                            {
-                                                Id = user.Id,
-                                                FirstName = user.FirstName,
-                                                LastName = user.LastName,
-                                                Email = user.Email,
-                                                Phone = user.Phone,
-                                                Status = user.Status,
-                                                RoleName = oc.Name
-                                            }).FirstOrDefault();
-
-                return userDetailsWithRoles;
-            }
-        }
+        }       
 
         public bool CheckExistForUpdate(string email, int Id)
         {
@@ -105,6 +80,15 @@ namespace DataAccess.Concrete.EntityFramework
                               where user.Email == email && user.Id != Id
                               select user).Any();
                 return result;
+            }
+        }
+
+        public bool CheckExistById(int id)
+        {
+            using (var context = new DataBaseContext())
+            {
+                var exist = context.Users.Any(u => u.Id == id);
+                return exist;
             }
         }
 

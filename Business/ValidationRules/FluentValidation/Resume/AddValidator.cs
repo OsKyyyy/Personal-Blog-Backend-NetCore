@@ -11,7 +11,6 @@ namespace Business.ValidationRules.FluentValidation.Resume
             RuleFor(r => r.Title).NotEmpty().WithMessage("Bu alan boş olamaz");
             RuleFor(r => r.Organization).NotEmpty().WithMessage("Bu alan boş olamaz");
             RuleFor(r => r.StartDate).NotEmpty().WithMessage("Bu alan boş olamaz");
-            RuleFor(r => r.CurrentPosition).NotEmpty().WithMessage("Bu alan boş olamaz");            
             RuleFor(r => r.CreateUserId).NotEmpty().WithMessage("Bu alan boş olamaz");
         }
     }

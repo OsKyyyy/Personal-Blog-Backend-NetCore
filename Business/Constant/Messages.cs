@@ -34,12 +34,25 @@ namespace Business.Constant
         public static string RoleAlreadyExists = "Rol Zaten Mevcut";
         public static string PageClaimsDeleted = "Rol Yetkileri Silindi";
 
+        public static string ProjectAdded = "Project Eklendi";
+        public static string ProjectAddError = "Project Eklenirken Hata İle Karşılaşıldı";
+        public static string ProjectUpdated = "Project Güncellendi";
+        public static string ProjectNotFound = "Project Bulunamadı";
+        public static string ProjectInfoListed = "Project Bilgileri Listelendi";
+        public static string ProjectDeleted = "Project Silindi";
+
         public static string BlogAdded = "Blog Eklendi";
         public static string BlogAddError = "Blog Eklenirken Hata İle Karşılaşıldı";
         public static string BlogUpdated = "Blog Güncellendi";
         public static string BlogNotFound = "Blog Bulunamadı";
         public static string BlogInfoListed = "Blog Bilgileri Listelendi";
-        public static string BlogDeleted = "Blog Silindi";        
+        public static string BlogDeleted = "Blog Silindi";
+
+        public static string CommentAdded = "Yorum Eklendi";
+        public static string CommentUpdated = "Yorum Güncellendi";
+        public static string CommentNotFound = "Yorum Bulunamadı";
+        public static string CommentInfoListed = "Yorum Bilgileri Listelendi";
+        public static string CommentDeleted = "Yorum Silindi";
 
         public static string TagAdded = "Tag Eklendi";
         public static string TagDeleted = "Tag Silindi";

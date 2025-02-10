@@ -1,25 +1,25 @@
 ﻿using Business.Abstract;
-using Entities.Dtos.About;
+using Entities.Dtos.Comment;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AboutController : Controller
+    public class CommentController : Controller
     {
-        private IAboutService _aboutService;
+        private ICommentService _commentService;
 
-        public AboutController(IAboutService aboutService)
+        public CommentController(ICommentService commentService)
         {
-            _aboutService = aboutService;
+            _commentService = commentService;
         }
 
         [Route("Add")]
         [HttpPost]
-        public ActionResult Add(AboutAddDto aboutAddDto)
+        public ActionResult Add(CommentAddDto commentAddDto)
         {            
-            var result = _aboutService.Add(aboutAddDto);
+            var result = _commentService.Add(commentAddDto);
             
             if (!result.Status)
             {
@@ -31,15 +31,15 @@ namespace WebAPI.Controllers
 
         [Route("Update")]
         [HttpPut]
-        public ActionResult Update(AboutUpdateDto aboutUpdateDto)
+        public ActionResult Update(CommentUpdateDto commentUpdateDto)
         {
-            var listById = _aboutService.CheckExistById(aboutUpdateDto.Id);
+            var listById = _commentService.CheckExistById(commentUpdateDto.Id);
             if (!listById.Status)
             {
                 return BadRequest(listById);
             }
 
-            var result = _aboutService.Update(aboutUpdateDto);
+            var result = _commentService.Update(commentUpdateDto);
 
             if (!result.Status)
             {
@@ -53,27 +53,14 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            var listById = _aboutService.CheckExistById(id);
+            var listById = _commentService.CheckExistById(id);
             if (!listById.Status)
             {
                 return BadRequest(listById);
             }
 
-            var result = _aboutService.Delete(id);
+            var result = _commentService.Delete(id);
 
-            if (!result.Status)
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result);
-        }
-
-        [Route("List")]
-        [HttpGet]
-        public ActionResult List()
-        {
-            var result = _aboutService.List();
             if (!result.Status)
             {
                 return BadRequest(result);

@@ -7,7 +7,7 @@ namespace Business.Abstract
     {
         IDataResult<BlogViewDto> Add(BlogAddDto blogAddDto);
         IResult Update(BlogUpdateDto blogUpdateDto);
-        IDataResult<BlogViewDto> ListById(int id);
+        IResult CheckExistById(int id);
         IResult Delete(int id);
     }
 }

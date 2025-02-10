@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
         [HttpPut]
         public ActionResult Update(BlogUpdateDto blogUpdateDto)
         {
-            var listById = _blogService.ListById(blogUpdateDto.Id);
+            var listById = _blogService.CheckExistById(blogUpdateDto.Id);
             if (!listById.Status)
             {
                 return BadRequest(listById);
@@ -81,7 +81,7 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            var listById = _blogService.ListById(id);
+            var listById = _blogService.CheckExistById(id);
             if (!listById.Status)
             {
                 return BadRequest(listById);
