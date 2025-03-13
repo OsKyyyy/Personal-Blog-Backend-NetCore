@@ -57,6 +57,10 @@ namespace Business.Constant
         public static string TagAdded = "Tag Eklendi";
         public static string TagDeleted = "Tag Silindi";
 
+        public static string BlogImageAdded = "Blog Görselleri Eklendi";
+        public static string BlogImageDeleted = "Blog Görselleri Silindi";
+        public static string BlogImageInfoListed = "Blog Görsel Bilgileri Listelendi";
+
         public static string AboutAdded = "Hakkımda Eklendi";
         public static string AboutUpdated = "Hakkımda Güncellendi";
         public static string AboutNotFound = "Hakkımda Bulunamadı";
@@ -68,6 +72,12 @@ namespace Business.Constant
         public static string ResumeNotFound = "Özgeçmiş Bulunamadı";
         public static string ResumeInfoListed = "Özgeçmiş Bilgileri Listelendi";
         public static string ResumeDeleted = "Özgeçmiş Silindi";
+
+        public static string ContactAdded = "Mesaj Gönderildi";
+        public static string ContactUpdated = "Mesaj Güncellendi";
+        public static string ContactNotFound = "Mesaj Bulunamadı";
+        public static string ContactInfoListed = "Mesaj Bilgileri Listelendi";
+        public static string ContactDeleted = "Mesaj Silindi";
     }
 
 }

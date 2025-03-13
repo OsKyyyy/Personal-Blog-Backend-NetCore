@@ -78,6 +78,12 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ResumeViewDto>>(result, Messages.ResumeInfoListed);
         }
 
+        public IDataResult<ResumeViewDto> ListById(int id)
+        {
+            var result = _resumeDal.ListById(id);
+            return new SuccessDataResult<ResumeViewDto>(result, Messages.ResumeInfoListed);
+        }
+
         [SecuredOperation("Admin")]
         public IResult CheckExistById(int id)
         {

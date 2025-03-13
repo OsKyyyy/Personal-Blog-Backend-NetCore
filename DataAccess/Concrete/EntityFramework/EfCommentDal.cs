@@ -40,6 +40,107 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
+        public void UpdateStatus(int id)
+        {
+            using (var context = new DataBaseContext())
+            {
+                var result = (from r in context.Comments
+                              where r.Id == id
+                              select r).FirstOrDefault();
+
+                result.Status = true;
+
+                context.SaveChanges();
+            }
+        }
+
+        public List<CommentViewDto> List()
+        {
+            using (var context = new DataBaseContext())
+            {
+                var result = (from r in context.Comments
+                              join b in context.Blogs on r.BlogId equals b.Id into blogs
+                              from b in blogs.DefaultIfEmpty()
+                              where r.Deleted == false
+                              orderby r.Status ascending
+                              select new
+                              {
+                                  r.Id,
+                                  r.BlogId,
+                                  r.ParentId,
+                                  r.CommentText,
+                                  r.Name,
+                                  r.Email,
+                                  r.Status,
+                                  r.CreateDate,
+                                  BlogTitle = b == null ? null : b.Title,
+                                  BlogSlug = b == null ? null : b.Slug
+                              }).ToList();
+
+                List<CommentViewDto> resumeList = new List<CommentViewDto>();
+
+                foreach (var r in result)
+                {
+                    resumeList.Add(new CommentViewDto
+                    {
+                        Id = r.Id,
+                        BlogId = r.BlogId,
+                        BlogTitle = r.BlogTitle,
+                        BlogSlug = r.BlogSlug,
+                        ParentId = r.ParentId,
+                        CommentText = r.CommentText,
+                        Name = r.Name,
+                        Email = r.Email,                        
+                        Status = r.Status,
+                        CreateDate = r.CreateDate.ToString("dd MMMM yyyy HH:mm"),
+                    });
+                }
+
+                return resumeList;
+            }
+        }
+
+        public CommentViewDto ListById(int id)
+        {
+            using (var context = new DataBaseContext())
+            {
+                var result = (from r in context.Comments
+                              join b in context.Blogs on r.BlogId equals b.Id into blogs
+                              from b in blogs.DefaultIfEmpty()
+                              where r.Id == id
+                              orderby r.Status ascending
+                              select new
+                              {
+                                  r.Id,
+                                  r.BlogId,
+                                  r.ParentId,
+                                  r.CommentText,
+                                  r.Name,
+                                  r.Email,
+                                  r.Status,
+                                  r.CreateDate,
+                                  BlogTitle = b == null ? null : b.Title,
+                                  BlogSlug = b == null ? null : b.Slug
+                              }).FirstOrDefault();
+
+                CommentViewDto contactList = new CommentViewDto()
+                {
+                    Id = result.Id,
+                    BlogId = result.BlogId,
+                    BlogTitle = result.BlogTitle,
+                    BlogSlug = result.BlogSlug,
+                    ParentId = result.ParentId,
+                    CommentText = result.CommentText,
+                    Name = result.Name,
+                    Email = result.Email,
+                    Status = result.Status,
+                    CreateDate = result.CreateDate.ToString("dd MMMM yyyy HH:mm"),
+                };
+
+                return contactList;
+            }
+        }
+
         public bool CheckExistById(int id)
         {
             using (var context = new DataBaseContext())
@@ -53,7 +154,6 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (var context = new DataBaseContext())
             {
-
                 var result = (from c in context.Comments
                               where c.Id == id
                               select c).FirstOrDefault();

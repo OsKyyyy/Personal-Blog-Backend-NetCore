@@ -10,6 +10,7 @@ namespace DataAccess.Abstract
         void Update(Resume resume);
         void Delete(int id);
         List<ResumeViewDto> List();
+        ResumeViewDto ListById(int id);
         bool CheckExistById(int id);
 
     }

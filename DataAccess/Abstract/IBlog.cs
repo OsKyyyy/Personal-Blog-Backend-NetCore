@@ -9,6 +9,9 @@ namespace DataAccess.Abstract
         int Add(Blog blog);
         void Update(Blog blog);
         void Delete(int id);
+        List<BlogViewDto> List();
+        BlogViewDto ListById(int id);
+        BlogViewDto ListBySlug(string slug);
         bool CheckExistById(int id);
     }
 }

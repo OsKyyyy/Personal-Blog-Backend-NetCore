@@ -36,12 +36,18 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<TagManager>().As<ITagService>();
             builder.RegisterType<EfTagDal>().As<ITagDal>();
 
+            builder.RegisterType<BlogImageManager>().As<IBlogImageService>();
+            builder.RegisterType<EfBlogImageDal>().As<IBlogImageDal>();
+
             builder.RegisterType<AboutManager>().As<IAboutService>();
             builder.RegisterType<EfAboutDal>().As<IAboutDal>();
 
             builder.RegisterType<ResumeManager>().As<IResumeService>();
             builder.RegisterType<EfResumeDal>().As<IResumeDal>();
-            
+
+            builder.RegisterType<ContactManager>().As<IContactService>();
+            builder.RegisterType<EfContactDal>().As<IContactDal>();
+
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

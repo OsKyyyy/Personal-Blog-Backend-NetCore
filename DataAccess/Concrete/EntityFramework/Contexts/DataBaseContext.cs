@@ -16,8 +16,10 @@ namespace DataAccess.Concrete.EntityFramework.Contexts
         public DbSet<Project> Projects { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<BlogImage> BlogImages { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<About> About { get; set; }
         public DbSet<Resume> Resume { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
     }
 }

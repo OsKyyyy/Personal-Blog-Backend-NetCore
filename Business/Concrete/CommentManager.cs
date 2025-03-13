@@ -20,7 +20,6 @@ namespace Business.Concrete
             _commentDal = commentDal;
         }
          
-        [SecuredOperation("Admin")]
         [ValidationAspect(typeof(AddValidator))]
         public IResult Add(CommentAddDto commentAddDto)
         {
@@ -42,7 +41,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CommentAdded);
         }
 
-        [SecuredOperation("Admin")]
         [ValidationAspect(typeof(UpdateValidator))]
         public IResult Update(CommentUpdateDto commentUpdateDto)
         {
@@ -60,6 +58,27 @@ namespace Business.Concrete
             _commentDal.Update(comment);
 
             return new SuccessResult(Messages.CommentUpdated);
+        }
+
+        [SecuredOperation("Admin")]
+        public IResult UpdateStatus(int id)
+        {
+            _commentDal.UpdateStatus(id);
+            return new SuccessResult(Messages.CommentUpdated);
+        }
+
+        [SecuredOperation("Admin")]
+        public IDataResult<List<CommentViewDto>> List()
+        {
+            var result = _commentDal.List();
+            return new SuccessDataResult<List<CommentViewDto>>(result, Messages.CommentInfoListed);
+        }
+
+        [SecuredOperation("Admin")]
+        public IDataResult<CommentViewDto> ListById(int id)
+        {
+            var result = _commentDal.ListById(id);
+            return new SuccessDataResult<CommentViewDto>(result, Messages.CommentInfoListed);
         }
 
         [SecuredOperation("Admin")]

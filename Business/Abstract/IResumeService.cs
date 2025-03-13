@@ -10,5 +10,6 @@ namespace Business.Abstract
         IResult CheckExistById(int id);
         IResult Delete(int id);
         IDataResult<List<ResumeViewDto>> List();
+        IDataResult<ResumeViewDto> ListById(int id);
     }
 }

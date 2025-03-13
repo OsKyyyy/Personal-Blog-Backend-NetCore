@@ -58,6 +58,21 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
+        public void DeleteAll()
+        {
+            using (var context = new DataBaseContext())
+            {
+                var result = context.About.ToList();
+
+                foreach (var item in result)
+                {
+                    item.Deleted = true;
+                }
+
+                context.SaveChanges();
+            }
+        }
+
         public AboutViewDto List()
         {
             using (var context = new DataBaseContext())
@@ -75,6 +90,12 @@ namespace DataAccess.Concrete.EntityFramework
                                   a.Email,
                                   a.Phone,
                               }).FirstOrDefault();
+
+                if (result == null)
+                {
+                    return null;
+                }
+
                 return new AboutViewDto
                 {
                     Id = result.Id,

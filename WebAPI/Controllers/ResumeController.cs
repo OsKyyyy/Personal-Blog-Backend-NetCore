@@ -81,5 +81,18 @@ namespace WebAPI.Controllers
 
             return Ok(result);
         }
+
+        [Route("ListById")]
+        [HttpGet]
+        public ActionResult ListById(int id)
+        {
+            var result = _resumeService.ListById(id);
+            if (!result.Status)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
     }
 }

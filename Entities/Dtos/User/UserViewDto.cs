@@ -17,5 +17,9 @@ namespace Entities.Dtos.User
         public string? RoleName { get; set; }
 
         public bool Status { get; set; }
+
+
+        public string Token { get; set; }
+        public DateTime Expiration { get; set; }
     }
 }

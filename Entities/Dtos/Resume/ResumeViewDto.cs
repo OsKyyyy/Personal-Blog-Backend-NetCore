@@ -11,5 +11,7 @@ namespace Entities.Dtos.Resume
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public bool CurrentPosition { get; set; }
+        public string CreateDate { get; set; }
+        public string CreateUser { get; set; }
     }
 }

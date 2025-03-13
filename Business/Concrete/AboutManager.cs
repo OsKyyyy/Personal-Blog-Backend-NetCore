@@ -74,6 +74,12 @@ namespace Business.Concrete
             return new SuccessResult(Messages.AboutDeleted);
         }
 
+        public IResult DeleteAll()
+        {
+            _aboutDal.DeleteAll();
+            return new SuccessResult(Messages.AboutDeleted);
+        }
+
         public IDataResult<AboutViewDto> List()
         {
             var result = _aboutDal.List();

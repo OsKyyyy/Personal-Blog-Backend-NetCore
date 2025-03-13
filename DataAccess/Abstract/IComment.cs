@@ -8,6 +8,9 @@ namespace DataAccess.Abstract
     {
         void Add(Comment comment);
         void Update(Comment comment);
+        void UpdateStatus(int id);
+        List<CommentViewDto> List();
+        CommentViewDto ListById(int id);
         void Delete(int id);
         bool CheckExistById(int id);
 

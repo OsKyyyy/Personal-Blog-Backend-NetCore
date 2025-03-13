@@ -8,6 +8,7 @@ namespace Business.Abstract
         IResult Add(AboutAddDto aboutAddDto);
         IResult Update(AboutUpdateDto aboutUpdateDto);
         IResult Delete(int id);
+        IResult DeleteAll();
         IDataResult<AboutViewDto> List();
         IResult CheckExistById(int id);
     }

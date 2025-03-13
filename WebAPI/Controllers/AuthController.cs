@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results.Concrete;
 using Entities.Dtos;
 using Entities.Dtos.User;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace WebAPI.Controllers
         [Route("Login")]
         [HttpPost]
         public ActionResult Login(UserLoginDto userForLoginDto)
-        {            
+        {           
             var userToLogin = _authService.Login(userForLoginDto);
             
             if (!userToLogin.Status)
@@ -30,7 +31,20 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Status)
             {
-                return Ok(result);
+                SuccessDataResult<UserViewDto> dataResult = new SuccessDataResult<UserViewDto>(
+                    new UserViewDto
+                    {
+                        Id = userToLogin.Data.Id,
+                        FirstName = userToLogin.Data.FirstName,
+                        LastName = userToLogin.Data.LastName,
+                        Email = userToLogin.Data.Email,
+                        Phone = userToLogin.Data.Phone,
+                        Token = result.Data.Token,
+                        Expiration = result.Data.Expiration
+                    },
+                    result.Message
+                );                
+                return Ok(dataResult);
             }
 
             return BadRequest(result);

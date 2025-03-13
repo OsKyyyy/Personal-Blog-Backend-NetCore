@@ -60,6 +60,7 @@ namespace DataAccess.Concrete.EntityFramework
             using (var context = new DataBaseContext())
             {
                 var result = (from r in context.Resume
+                              join u in context.Users on r.CreateUserId equals u.Id
                               where r.Deleted == false
                               orderby r.StartDate descending
                               select new
@@ -70,7 +71,10 @@ namespace DataAccess.Concrete.EntityFramework
                                   r.Organization,
                                   r.StartDate,
                                   r.EndDate,
-                                  r.CurrentPosition                                  
+                                  r.CurrentPosition,
+                                  r.CreateDate,
+                                  u.FirstName,
+                                  u.LastName
                               }).ToList();
 
                 List<ResumeViewDto> resumeList = new List<ResumeViewDto>();
@@ -85,10 +89,51 @@ namespace DataAccess.Concrete.EntityFramework
                         Organization = r.Organization,
                         StartDate = r.StartDate.ToString("MMMM yyyy"),
                         EndDate = r.EndDate.HasValue ? r.EndDate.Value.ToString("MMMM yyyy") : null,
-                        CurrentPosition = r.CurrentPosition
+                        CurrentPosition = r.CurrentPosition,
+                        CreateDate = r.CreateDate.ToString("dd MMMM yyyy HH:mm"),
+                        CreateUser = r.FirstName + " " + r.LastName
                     });
                 }
 
+                return resumeList;
+            }
+        }
+
+        public ResumeViewDto ListById(int id)
+        {
+            using (var context = new DataBaseContext())
+            {
+                var result = (from r in context.Resume
+                              join u in context.Users on r.CreateUserId equals u.Id
+                              where r.Id == id
+                              orderby r.StartDate descending
+                              select new
+                              {
+                                  r.Id,
+                                  r.Description,
+                                  r.Title,
+                                  r.Organization,
+                                  r.StartDate,
+                                  r.EndDate,
+                                  r.CurrentPosition,
+                                  r.CreateDate,
+                                  u.FirstName,
+                                  u.LastName
+                              }).FirstOrDefault();
+
+                ResumeViewDto resumeList = new ResumeViewDto()
+                {
+                    Id = result.Id,
+                    Description = result.Description,
+                    Title = result.Title,
+                    Organization = result.Organization,
+                    StartDate = result.StartDate.ToString("dd/MM/yyyy"),
+                    EndDate = result.EndDate.HasValue ? result.EndDate.Value.ToString("dd/MM/yyyy") : null,
+                    CurrentPosition = result.CurrentPosition,
+                    CreateDate = result.CreateDate.ToString("dd MMMM yyyy HH:mm"),
+                    CreateUser = result.FirstName + " " + result.LastName
+                };
+                
                 return resumeList;
             }
         }

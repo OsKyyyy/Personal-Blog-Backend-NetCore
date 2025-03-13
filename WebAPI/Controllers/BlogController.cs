@@ -2,6 +2,7 @@
 using Entities.Dtos.Blog;
 using Entities.Dtos.Tag;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 using System.Transactions;
 
 namespace WebAPI.Controllers
@@ -12,16 +13,18 @@ namespace WebAPI.Controllers
     {
         private IBlogService _blogService;
         private ITagService _tagService;
+        private IBlogImageService _blogImageService;
 
-        public BlogController(IBlogService blogService,ITagService tagService)
+        public BlogController(IBlogService blogService,ITagService tagService, IBlogImageService blogImageService)
         {
             _blogService = blogService;
             _tagService = tagService;
+            _blogImageService = blogImageService;
         }
 
         [Route("Add")]
         [HttpPost]
-        public ActionResult Add(BlogAddDto blogAddDto)
+        public ActionResult Add([FromForm] BlogAddDto blogAddDto)
         {            
             using (var scope = new TransactionScope())
             {
@@ -52,6 +55,13 @@ namespace WebAPI.Controllers
                     return BadRequest(resultTag);
                 }
 
+                var blogImages = _blogImageService.Add(result.Data.Id, blogAddDto.Content);
+
+                if (!blogImages.Status)
+                {
+                    return BadRequest(resultTag);
+                }                
+
                 scope.Complete();
                 return Ok(result);               
             }
@@ -59,22 +69,38 @@ namespace WebAPI.Controllers
 
         [Route("Update")]
         [HttpPut]
-        public ActionResult Update(BlogUpdateDto blogUpdateDto)
+        public ActionResult Update([FromForm] BlogUpdateDto blogUpdateDto)
         {
-            var listById = _blogService.CheckExistById(blogUpdateDto.Id);
-            if (!listById.Status)
+            using (var scope = new TransactionScope())
             {
-                return BadRequest(listById);
+                var listById = _blogService.CheckExistById(blogUpdateDto.Id);
+                if (!listById.Status)
+                {
+                    return BadRequest(listById);
+                }
+
+                var result = _blogService.Update(blogUpdateDto);
+
+                if (!result.Status)
+                {
+                    return BadRequest(result);
+                }
+
+                var listImages = _blogImageService.ListById(blogUpdateDto.Id);
+                if (!listImages.Status)
+                {
+                    return BadRequest(listImages);
+                }
+
+                var updateImages = _blogImageService.UpdateImages(blogUpdateDto.Content, listImages.Data);
+                if (!listImages.Status)
+                {
+                    return BadRequest(listImages);
+                }
+
+                scope.Complete();
+                return Ok(result);
             }
-
-            var result = _blogService.Update(blogUpdateDto);
-
-            if (!result.Status)
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result);
         }
 
         [Route("Delete")]
@@ -89,6 +115,45 @@ namespace WebAPI.Controllers
 
             var result = _blogService.Delete(id);
 
+            if (!result.Status)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [Route("ListById")]
+        [HttpGet]
+        public ActionResult ListById(int id)
+        {
+            var result = _blogService.ListById(id);
+            if (!result.Status)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [Route("ListBySlug")]
+        [HttpGet]
+        public ActionResult ListBySlug(string slug)
+        {
+            var result = _blogService.ListBySlug(slug);
+            if (!result.Status)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [Route("List")]
+        [HttpGet]
+        public ActionResult List()
+        {
+            var result = _blogService.List();
             if (!result.Status)
             {
                 return BadRequest(result);

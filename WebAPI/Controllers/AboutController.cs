@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Entities.Dtos.About;
 using Microsoft.AspNetCore.Mvc;
+using System.Transactions;
 
 namespace WebAPI.Controllers
 {
@@ -18,15 +19,26 @@ namespace WebAPI.Controllers
         [Route("Add")]
         [HttpPost]
         public ActionResult Add(AboutAddDto aboutAddDto)
-        {            
-            var result = _aboutService.Add(aboutAddDto);
-            
-            if (!result.Status)
+        {
+            using (var scope = new TransactionScope())
             {
-                return BadRequest(result);
-            }            
+                var resultDelete = _aboutService.DeleteAll();
 
-            return Ok(result);
+                if (!resultDelete.Status)
+                {
+                    return BadRequest(resultDelete);
+                }
+
+                var result = _aboutService.Add(aboutAddDto);
+
+                if (!result.Status)
+                {
+                    return BadRequest(result);
+                }
+
+                scope.Complete();
+                return Ok(result);
+            }
         }
 
         [Route("Update")]
